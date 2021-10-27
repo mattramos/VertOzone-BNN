@@ -1,19 +1,65 @@
-# VertOzone-BNN
-A Bayesian neural network (BNN) to fuse chemistry-climate models with observations to produce a continuous record of vertically resolved ozone.
+This repository supports a manuscript submission to ESSD where we used a Bayesian Neural Network [framework](https://proceedings.neurips.cc/paper/2020/file/0d5501edb21a59a43435efa67f200828-Paper.pdf) to ensemble Chemistry climate models from [CCMI](https://igacproject.org/activities/CCMI)
 
-This is an extension of the work from [Sengupta et. al., (2020)](URL 'https://proceedings.neurips.cc/paper/2020/file/0d5501edb21a59a43435efa67f200828-Paper.pdf') which looked at total ozone column. The scripts that follow are the most up-to-date scripts for Bayesian neural network gophysical model ensembling, and work with tensorflow v1.x
+### If you are here for the data
+- ML training data preprocessed and ready to go is [vmro3_refC1SD_70x36_13mdls_masked_extrap_and_interp.pkl](/not/on/github/vmro3_refC1SD_70x36_13mdls_masked_extrap_and_interp.pkl). This data has the same extrapolation and interpolation testing that we used in the manuscript. This data should be combined with code in Training/preprocess_data.py
+- Infilled zonal mean ozone (vertically resolved): [zmo3_BNNOz.nc](https://github.com/mattramos/VertOzone-BNN/zmo3_BNNOz.nc)
 
-Check out this binder example of how ensembling geophysical models with Bayesian neural networks works! [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mattramos/Toy-bayesian-neural-network-ensemble/master?filepath=toy_dataset_example.ipynb)
+### If you are here for a template of the BNN
+- Look [here for a toy example](https://github.com/mattramos/Toy-bayesian-neural-network-ensemble) also in binder [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mattramos/Toy-bayesian-neural-network-ensemble/master?filepath=toy_dataset_example.ipynb)
+- Look here for a blank repository (WORK IN PROGRESS - send me an email)
 
-## Data descriptions
-- [pretrained-checkpoints](URL 'https://github.com/mattramos/VertOzone-BNN/tree/master/pretrained-checkpoints') contains the 48 pretrained BNN ensemble members
-- [outputRAW](URL 'https://github.com/mattramos/VertOzone-BNN/tree/master/outputRAW') contains the log scaled prediction and uncertainty fields and the defining coordinates.
-- zmo3_BNNOz.nc is the predicted output of zonally averaged vertically resolved ozone field including uncertainty.
+### If you want to know what we did
+The below flow chart shows the process with links to show sources of data and which scripts we used. As much of the data we used is external we have not provided it here. This includes the other ozone datasets.
+Other code sources  
+- Dynamical linear modelling for ozone trend analysis from [Alsing et al., (2019)](https://github.com/justinalsing/dlmmc). Datasets used as regressors are found within the DLM documentation.  
 
-## File description
-- utils.py and preprocess_data.py contain utility functions that are data specific. All the data mapping and coordiante scaling is handled by these scripts as well as function that retrieve variables such as model weights and model bias.
-- train_dispatch.py is used to distribute training of the BNN to multiple GPUs. In this example it is set up for 4 GPUs. This script calls multi_train_BNN.py which trains the individual networks and contains parameters such as number of epochs etc.
-- checking_priors.ipynb checks that the priors have been appropriately encoded within the BNN
-- load_and_save_raw_output.ipynb loads model checkpoints, either self trained or pretrained, outputs predictions and uncertainties, and performs basic validation testing. 
-- Plotting_for_publication.ipynb has a small script for plotting some of the output.
-- constructing_zmo3_output.ipynb is the script used to construct the netCDF file that contains the zonal mean ozone prediction and its uncertainty. 
+Other datasets
+- [Chemistry climate model data](https://data.ceda.ac.uk/badc/wcrp-ccmi/data/CCMI-1/output)
+- [Bodeker Scientific](http://www.bodekerscientific.com/data/monthly-mean-global-vertically-resolved-ozone)
+- [SWOOSH](https://csl.noaa.gov/groups/csl8/swoosh/)
+- [SBUV](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2001JD000853)
+- [BASIC](https://data.mendeley.com/datasets/2mgx2xzzpk/3)
+
+<pre>
+&nbsp;&nbsp;&nbsp;┌──────────────┐&nbsp;&nbsp;┌─────────────────┐&nbsp;&nbsp;  
+&nbsp;&nbsp;&nbsp;│Model&nbsp;data&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;│Observation&nbsp;data&nbsp;│&nbsp;&nbsp;
+   │----------    │  │---------------- │
+   └──────┬───────┘  └──────┬──────────┘
+          │                 │
+          ▼                 ▼
+┌──────────────────────────────────────────┐
+│ Preprocessing                            │
+│ ----------------                         │
+│ preprocessing_training_dataV2.1.ipynb    │
+└──────────────────┬───────────────────────┘
+                   │
+                   ▼
+┌──────────────────────────────────────────┐
+│ Training                                 │
+│ ------------------                       │
+│ BNN model                                │
+│ ┌─►BNN.py                                │
+│ │┤►multi_train.py                        │
+│ │┤►preprocess_data.py                    │
+│ │┤►utils.py                              │
+│ └─►dispatch_script.ipynb                 │
+│ checking_priors.ipynb                    │
+└──────────────────┬───────────────────────┘
+                   │
+                   ▼
+┌──────────────────────────────────────────┐
+│ Postprocessing  (testing / validating)   │
+│ -------------------------------------    │
+│ load_and_save_raw_output.ipynb           │
+│ constructing_zmo3_output.ipynb           │
+└───────┬──────────────────────┬───────────┘
+        │                      │
+        ▼                      ▼
+┌────────────────┐   ┌─────────────────────┐
+│ Plotting       │   │ DLM                 │
+│ --------       │   │ ---                 │
+└────────────────┘   │ Code from Alsing    │
+                     │ Extra datasets      │
+                     └─────────────────────┘
+                     
+</pre>

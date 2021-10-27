@@ -1,8 +1,8 @@
 This repository supports a manuscript submission to ESSD where we used a Bayesian Neural Network [framework](https://proceedings.neurips.cc/paper/2020/file/0d5501edb21a59a43435efa67f200828-Paper.pdf) to ensemble Chemistry climate models from [CCMI](https://igacproject.org/activities/CCMI)
 
 ### If you are here for the data
-- ML training data preprocessed and ready to go is [vmro3_refC1SD_70x36_13mdls_masked_extrap_and_interp.pkl](/not/on/github/vmro3_refC1SD_70x36_13mdls_masked_extrap_and_interp.pkl). This data has the same extrapolation and interpolation testing that we used in the manuscript. This data should be combined with code in Training/preprocess_data.py
-- Infilled zonal mean ozone (vertically resolved): [zmo3_BNNOz.nc](https://github.com/mattramos/VertOzone-BNN/zmo3_BNNOz.nc)
+- ML training data preprocessed and ready to go is [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5603750.svg)](https://doi.org/10.5281/zenodo.5603750). This data has the same extrapolation and interpolation testing that we used in the manuscript. This data should be combined with code in Training/preprocess_data.py
+- Infilled zonal mean ozone (vertically resolved): [zmo3_BNNOz.nc](https://github.com/mattramos/VertOzone-BNN/zmo3_BNNOz.nc) (Also versioned [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5603750.svg)](https://doi.org/10.5281/zenodo.5603750))
 
 ### If you are here for a template of the BNN
 - Look [here for a toy example](https://github.com/mattramos/Toy-bayesian-neural-network-ensemble) also in binder [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mattramos/Toy-bayesian-neural-network-ensemble/master?filepath=toy_dataset_example.ipynb)
@@ -14,6 +14,7 @@ Other code sources
 - Dynamical linear modelling for ozone trend analysis from [Alsing et al., (2019)](https://github.com/justinalsing/dlmmc). Datasets used as regressors are found within the DLM documentation.  
 
 Other datasets
+- Our training dataset [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5603750.svg)](https://doi.org/10.5281/zenodo.5603750)
 - [Chemistry climate model data](https://data.ceda.ac.uk/badc/wcrp-ccmi/data/CCMI-1/output)
 - [Bodeker Scientific](http://www.bodekerscientific.com/data/monthly-mean-global-vertically-resolved-ozone)
 - [SWOOSH](https://csl.noaa.gov/groups/csl8/swoosh/)
